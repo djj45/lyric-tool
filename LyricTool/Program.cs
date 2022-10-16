@@ -421,6 +421,8 @@ namespace LyricTool
                     {
                         Console.Write(item);
                     }
+
+                    interLudeList.Clear();
                 }
             };
         }
