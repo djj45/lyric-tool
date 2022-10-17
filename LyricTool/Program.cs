@@ -126,7 +126,6 @@ namespace LyricTool
                 HttpWebRequest Req = (HttpWebRequest)WebRequest.Create(url);
                 Req.UserAgent = _userAgent;
                 Req.Timeout = _timeOut;
-                Req.Proxy = null;
 
                 HttpWebResponse Resp = (HttpWebResponse)Req.GetResponse();
 
@@ -155,7 +154,6 @@ namespace LyricTool
                 Req.UserAgent = _userAgent;
                 Req.Timeout = _timeOut;
                 Req.Referer = _referer;
-                Req.Proxy = null;
 
                 HttpWebResponse Resp = (HttpWebResponse)Req.GetResponse();
 
@@ -537,7 +535,6 @@ namespace LyricTool
                 Req.UserAgent = _userAgent;
                 Req.Timeout = _timeOut;
                 Req.Referer = _referer;
-                Req.Proxy = null;
 
                 HttpWebResponse Resp = (HttpWebResponse)Req.GetResponse();
 
