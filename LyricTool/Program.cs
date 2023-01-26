@@ -256,9 +256,7 @@ namespace LyricTool
 
         public static void WriteLrc(string path, string songName, string singer, List<string> lyricList)
         {
-            songName = string.Join("-", songName.Split(Path.GetInvalidFileNameChars()));
-            singer = string.Join("-", singer.Split(Path.GetInvalidFileNameChars()));
-            using (StreamWriter lrc = File.CreateText(path + songName + "-" + singer + ".lrc"))
+            using (StreamWriter lrc = File.CreateText(path + GetValidName(songName) + "-" + GetValidName(singer) + ".lrc"))
             {
                 foreach (string lyric in lyricList)
                 {
@@ -299,6 +297,26 @@ namespace LyricTool
             }
 
             return rangeList;
+        }
+
+        public static string GetValidName(string _name)
+        {
+            string name = "";
+            string invalidName = new string(Path.GetInvalidFileNameChars());
+
+            foreach (var item in _name)
+            {
+                if (!invalidName.Contains(item.ToString()))
+                {
+                    name += item;
+                }
+                else
+                {
+                    name += "x";
+                }
+            }
+
+            return name;
         }
     }
 
@@ -372,7 +390,7 @@ namespace LyricTool
             Console.WriteLine(songName + "-" + singer);
             Console.ForegroundColor = ConsoleColor.White;
 
-            using (StreamWriter srt = File.CreateText(path + songName + "-" + singer + ".srt"))
+            using (StreamWriter srt = File.CreateText(path + Lyric.GetValidName(songName) + "-" + Lyric.GetValidName(singer) + ".srt"))
             {
                 if (list.Count != 0)
                 {
