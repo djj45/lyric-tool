@@ -165,7 +165,7 @@ namespace LyricTool
             }
         }
 
-        public static string GetId(string url, string rule)
+        public static string RegexMatch(string url, string rule)
         {
             Regex reg = new Regex(rule);
             Match match = reg.Match(url);
@@ -173,17 +173,28 @@ namespace LyricTool
             return match.Groups[1].Value;
         }
 
-        public static object GetMusic(string url)
+        public static object GetMusic(string _url)
         {
             //https://music.163.com/#/song?id=1469327796
             //https://music.163.com/song?id=1384482575&userid=1439471016
             //https://y.qq.com/n/ryqq/songDetail/004emQMs09Z1lz
             //https://c.y.qq.com/base/fcgi-bin/u?__=Xvhn4w
+            //分享黒うさP/初音ミク的单曲《千本桜 (千本樱)》: https://y.music.163.com/m/song?id=26096272&uct2=f4snycXGfLGHwlwqSH0jrA%3D%3D&dlt=0846&app_version=8.9.11&sc=wmv&tn= (来自@网易云音乐)
+            //周杰伦《晴天》https://c.y.qq.com/base/fcgi-bin/u?__=Rh7dw9P5cJn9 @QQ音乐
             string Id;
+            string url = RegexMatch(_url, "((https|http)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|])");
             if (url.Contains("c.y.qq.com"))
             {
                 url = GetResponseUri(url);
-                Id = GetId(url, "songid=([0-9]+)");
+                if (url.Contains("songid"))
+                {
+                    Id = RegexMatch(url, "songid=([0-9]+)");
+                }
+                else
+                {
+                    Id = RegexMatch(url, "songmid=([0-9a-zA-Z]+)");
+                }
+
                 if (Id != "")
                 {
                     return new QQ(Id);
@@ -191,7 +202,7 @@ namespace LyricTool
             }
             else if (url.Contains("y.qq.com"))
             {
-                Id = GetId(url, "songDetail/([0-9a-zA-Z]+)");
+                Id = RegexMatch(url, "songDetail/([0-9a-zA-Z]+)");
                 if (Id != "")
                 {
                     return new QQ(Id);
@@ -199,7 +210,7 @@ namespace LyricTool
             }
             else
             {
-                Id = GetId(url, "id=([0-9]+)");
+                Id = RegexMatch(url, "id=([0-9]+)");
                 if (Id != "")
                 {
                     return new NetEase(Id);
@@ -440,7 +451,7 @@ namespace LyricTool
 
                     interLudeList.Clear();
                 }
-            };
+            }
         }
     }
 
